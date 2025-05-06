@@ -98,7 +98,7 @@ const CreatePage = () => {
               Price
             </label>
             <div className="relative">
-              <span className="absolute left-3 top-3 text-gray-500">$</span>
+              <span className="absolute left-3 top-3 text-gray-500">₹</span>
               <input
                 type="number"
                 name="price"

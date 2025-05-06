@@ -146,7 +146,7 @@ const HomePage = () => {
                   </h2>
                   <div className="flex justify-between items-center">
                     <span className="text-2xl font-bold text-green-600">
-                      ${Number(product.price).toFixed(2)}
+                      ₹{Number(product.price).toFixed(2)}
                     </span>
                     <span className="text-sm text-gray-500">
                       Added {new Date().toLocaleDateString()}
