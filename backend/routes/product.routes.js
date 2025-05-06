@@ -9,15 +9,15 @@ import {
 const router = express.Router();
 
 // GET all products
-router.get('/', async (req, res) => {
-  try {
-    const products = await Product.find({});
-    res.json(products);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+router.get('/', getProducts);
 
-// Other routes...
+// POST new product
+router.post('/', createProduct);
+
+// PUT update product
+router.put('/:id', updateProduct);
+
+// DELETE product
+router.delete('/:id', deleteProduct);
 
 export default router;
