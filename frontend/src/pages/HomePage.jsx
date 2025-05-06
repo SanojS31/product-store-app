@@ -3,6 +3,23 @@ import { Link } from 'react-router-dom';
 import EditModal from '../components/EditModal';
 import config from '../config/config';
 
+const fetchWithTimeout = async (url, options = {}, timeout = 5000) => {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+    clearTimeout(id);
+    return response;
+  } catch (err) {
+    clearTimeout(id);
+    throw err;
+  }
+};
+
 const HomePage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,20 +29,35 @@ const HomePage = () => {
 
   const fetchProducts = async () => {
     try {
-      console.log('Fetching from:', `${config.API_URL}/api/products`); // Debug URL
-      const response = await fetch(`${config.API_URL}/api/products`);
+      setLoading(true);
+      setError(null);
+
+      const response = await fetchWithTimeout(
+        `${config.API_URL}/api/products`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            // Remove credentials if not needed
+            // 'credentials': 'include',
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('Response data:', data); // Debug response
       setProducts(Array.isArray(data) ? data : data.data || []);
-      setLoading(false);
     } catch (err) {
-      console.error('Fetch error:', err); // Debug error
-      setError(err.message);
+      console.error('Fetch error details:', {
+        message: err.message,
+        stack: err.stack,
+        url: `${config.API_URL}/api/products`,
+      });
+      setError('Failed to fetch products. Please try again later.');
+    } finally {
       setLoading(false);
     }
   };
