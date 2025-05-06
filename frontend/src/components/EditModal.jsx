@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import config from '../config/config';
+import { toast } from 'react-hot-toast';
 
 const EditModal = ({ product, isOpen, onClose, onUpdate }) => {
   const [formData, setFormData] = useState({
@@ -33,8 +34,10 @@ const EditModal = ({ product, isOpen, onClose, onUpdate }) => {
 
       onUpdate();
       onClose();
+      toast.success('Product updated successfully!');
     } catch (err) {
-      console.error('Update failed:', err);
+      console.error('Update error:', err);
+      toast.error('Failed to update product');
     }
   };
 
@@ -50,15 +53,16 @@ const EditModal = ({ product, isOpen, onClose, onUpdate }) => {
             className="text-gray-500 hover:text-gray-700 transition-colors"
           >
             <svg
-              className="w-6 h-6"
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
               fill="none"
-              stroke="currentColor"
               viewBox="0 0 24 24"
+              stroke="currentColor"
             >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth="2"
+                strokeWidth={2}
                 d="M6 18L18 6M6 6l12 12"
               />
             </svg>
@@ -111,14 +115,42 @@ const EditModal = ({ product, isOpen, onClose, onUpdate }) => {
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-3 rounded-lg bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 focus:ring-2 focus:ring-gray-200 transition-all"
+              className="px-6 py-3 rounded-lg bg-gray-100 text-gray-700 font-medium hover:bg-gray-200 focus:ring-2 focus:ring-gray-200 transition-all flex items-center gap-2"
             >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
               Cancel
             </button>
             <button
               type="submit"
-              className="px-6 py-3 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 transition-all transform hover:scale-[1.02]"
+              className="px-6 py-3 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 transition-all transform hover:scale-[1.02] flex items-center gap-2"
             >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
               Save Changes
             </button>
           </div>

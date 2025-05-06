@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import config from '../config/config';
 
 const CreatePage = () => {
@@ -35,11 +36,11 @@ const CreatePage = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      console.log('API Response:', data);
+      toast.success('Product created successfully!');
       navigate('/');
     } catch (err) {
-      console.error('API Error:', err);
+      console.error('Create error:', err);
+      toast.error('Failed to create product');
       setError(err.message);
     } finally {
       setLoading(false);
