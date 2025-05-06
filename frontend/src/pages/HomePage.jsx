@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import EditModal from '../components/EditModal';
-import config from '../config/config.js';
+import config from '../config/config';
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
@@ -10,47 +10,29 @@ const HomePage = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch(`${config.API_URL}/api/products`);
+  const fetchProducts = async () => {
+    try {
+      console.log('Fetching from:', `${config.API_URL}/api/products`); // Debug URL
+      const response = await fetch(`${config.API_URL}/api/products`);
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setProducts(data.data || []);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    };
 
+      const data = await response.json();
+      console.log('Response data:', data); // Debug response
+      setProducts(Array.isArray(data) ? data : data.data || []);
+      setLoading(false);
+    } catch (err) {
+      console.error('Fetch error:', err); // Debug error
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchProducts();
   }, []);
-
-  const handleUpdate = async () => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch(`${config.API_URL}/api/products`);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setProducts(data.data || []);
-        setLoading(false);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  };
 
   const handleDelete = async (productId) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
@@ -66,12 +48,15 @@ const HomePage = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        // Remove the deleted product from state
         setProducts(products.filter((product) => product._id !== productId));
       } catch (err) {
         setError(err.message);
       }
     }
+  };
+
+  const handleUpdate = async () => {
+    fetchProducts();
   };
 
   return (

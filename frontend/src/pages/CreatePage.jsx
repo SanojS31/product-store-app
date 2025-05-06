@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import config from '../config/config';
 
 const CreatePage = () => {
   const navigate = useNavigate();
@@ -21,10 +22,8 @@ const CreatePage = () => {
     setLoading(true);
     setError(null);
 
-    console.log('Submitting form data:', formData);
-
     try {
-      const response = await fetch('http://localhost:5000/api/products', {
+      const response = await fetch(`${config.API_URL}/api/products`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

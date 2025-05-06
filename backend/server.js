@@ -1,29 +1,36 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import path from 'path';
 import { connectDB } from './config/db.js';
 import productRoutes from './routes/product.routes.js';
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
+const __dirname = path.resolve();
 
-app.use(
-  cors({
-    origin: ['http://localhost:5173', 'https://your-frontend-url.netlify.app'],
-    credentials: true,
-  })
-);
-
+// Middleware
+app.use(cors());
 app.use(express.json());
+
+// Routes
 app.use('/api/products', productRoutes);
 
-// Health check endpoint
-app.get('/', (req, res) => {
-  res.json({ message: 'API is running' });
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/frontend/dist')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve((__dirname, 'frontend', 'dist', 'index.html')));
+  });
+}
+
+// Basic error handling
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
 app.listen(PORT, () => {
   connectDB();
-  console.log('Server is running on port ' + PORT);
+  console.log(`Server is running on port ${PORT}`);
 });

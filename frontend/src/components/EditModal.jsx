@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import config from '../config/config';
 
 const EditModal = ({ product, isOpen, onClose, onUpdate }) => {
   const [formData, setFormData] = useState({
@@ -16,7 +17,7 @@ const EditModal = ({ product, isOpen, onClose, onUpdate }) => {
     e.preventDefault();
     try {
       const response = await fetch(
-        `http://localhost:5000/api/products/${product._id}`,
+        `${config.API_URL}/api/products/${product._id}`,
         {
           method: 'PUT',
           headers: {
