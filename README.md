@@ -90,7 +90,7 @@ npm run dev
 ## Deployment
 
 - Backend deployed on [Render](https://render.com)
-- Frontend deployed on [Netlify](https://vercel.com)
+- Frontend deployed on [vercel](https://vercel.com)
 
 ## Project Structure
 
