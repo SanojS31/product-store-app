@@ -29,20 +29,13 @@ const HomePage = () => {
 
   const fetchProducts = async () => {
     try {
-      setLoading(true);
-      setError(null);
-
-      const response = await fetchWithTimeout(
-        `${config.API_URL}/api/products`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            // Remove credentials if not needed
-            // 'credentials': 'include',
-          },
-        }
-      );
+      const response = await fetch(`${config.API_URL}/api/products`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        mode: 'cors',
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -51,11 +44,7 @@ const HomePage = () => {
       const data = await response.json();
       setProducts(Array.isArray(data) ? data : data.data || []);
     } catch (err) {
-      console.error('Fetch error details:', {
-        message: err.message,
-        stack: err.stack,
-        url: `${config.API_URL}/api/products`,
-      });
+      console.error('Fetch error:', err);
       setError('Failed to fetch products. Please try again later.');
     } finally {
       setLoading(false);
