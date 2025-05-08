@@ -44,8 +44,8 @@ const EditModal = ({ product, isOpen, onClose, onUpdate }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white p-8 rounded-xl w-[480px] shadow-2xl transform transition-all scale-100 animate-fadeIn">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-white/90 backdrop-blur-sm p-8 rounded-xl w-[480px] shadow-2xl transform transition-all scale-100 animate-fadeIn">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-3xl font-bold text-gray-800">Edit Product</h2>
           <button
